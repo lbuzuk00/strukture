@@ -29,7 +29,7 @@ void print_list(struct Person* head) {
 	struct Person* current = head;
 	
 	while (current != NULL) {
-		printf("First Name: %s, Last Name: %s, Birth Year: %d\n", current->first_name, current->last_name, current->birth_year);
+		printf("Ime: %s, Prezime: %s, Godina rodenja: %d\n", current->first_name, current->last_name, current->birth_year);
 		current = current->next;
 	}
 }
@@ -172,10 +172,10 @@ int main() {
 	char last_name[50];
 	int birth_year;
 
-	head = add_to_beginning(head, "Mark", "Markovic", 1990);
-	head = add_to_beginning(head, "Ana", "Anic", 1985);
+	head = add_to_beginning(head, "Marko", "Markovic", 2000);
+	head = add_to_beginning(head, "Ana", "Anic", 1999);
 
-	printf("List of persons:\n");
+	printf("Lista ljudi:\n");
 	print_list(head);
 
 	head = add_to_end(head, "Maja", "Majic", 2000);
@@ -184,10 +184,10 @@ int main() {
 	struct Person* found_person = find_by_last_name(head, search_last_name);
 
 	if (found_person != NULL) {
-		printf("Found person: First Name: %s, Last Name: %s, Birth Year: %d\n", found_person->first_name, found_person->last_name, found_person->birth_year);
+		printf("Pronadena osoba: Ime: %s, Prezime: %s, Godina rodenja: %d\n", found_person->first_name, found_person->last_name, found_person->birth_year);
 	}
 	else {
-		printf("Person with last name %s not found.\n", search_last_name);
+		printf("Osoba s prezimenom %s nije pronađena.\n", search_last_name);
 	}
 
 
@@ -197,7 +197,7 @@ int main() {
 	head = add_before_person(head, "Luka", "Lukic", 2005, "Majic");
 
 
-	printf("List of persons after changes:\n");
+	printf("Lista nakon promjena:\n");
 	print_list(head);
 
 
@@ -205,7 +205,7 @@ int main() {
 	head = delete_person(head, deleted_last_name);
 
 
-	printf("List of persons after deletion:\n");
+	printf("Lista nakon brisanja:\n");
 	print_list(head);
 
 
