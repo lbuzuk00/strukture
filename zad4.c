@@ -1,67 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Struktura za reprezentaciju pojedinog člana polinoma
-struct PolinomClan {
-    double koeficijent;
-    int eksponent;
+
+struct PolynomialTerm {
+    double coefficient;
+    int exponent;
 };
 
-// Pomoćna funkcija za poređenje članova polinoma za sortiranje
+
 int compare(const void *a, const void *b) {
-    return ((struct PolinomClan*)b)->eksponent - ((struct PolinomClan*)a)->eksponent;
+    return ((struct PolynomialTerm*)b)->exponent - ((struct PolynomialTerm*)a)->exponent;
 }
 
 int main() {
-    // Otvori datoteku za čitanje
-    FILE *datoteka = fopen("polinom.txt", "r");
-    if (datoteka == NULL) {
-        printf("Nemoguće otvoriti datoteku.\n");
+  
+    FILE *file = fopen("polynomial.txt", "r");
+    if (file == NULL) {
+        printf("Unable to open the file.\n");
         return 1;
     }
 
-    // Niz za čuvanje članova polinoma
-    struct PolinomClan *polinom = NULL;
-    int brojClanova = 0;
 
-    // Učitavanje članova polinoma iz datoteke
-    while (fscanf(datoteka, "%lf %d", &polinom[brojClanova].koeficijent, &polinom[brojClanova].eksponent) == 2) {
-        brojClanova++;
+    struct PolynomialTerm *polynomial = NULL;
+    int termCount = 0;
 
-        // Alociranje dodatne memorije po potrebi
-        polinom = (struct PolinomClan *)realloc(polinom, (brojClanova + 1) * sizeof(struct PolinomClan));
+
+    while (fscanf(file, "%lf %d", &polynomial[termCount].coefficient, &polynomial[termCount].exponent) == 2) {
+        termCount++;
+
+
+        polynomial = (struct PolynomialTerm *)realloc(polynomial, (termCount + 1) * sizeof(struct PolynomialTerm));
     }
 
-    // Sortiranje članova polinoma prema eksponentima
-    qsort(polinom, brojClanova, sizeof(struct PolinomClan), compare);
 
-    // Sumiranje koeficijenata za članove sa istim eksponentima
-    for (int i = 0; i < brojClanova; i++) {
-        for (int j = i + 1; j < brojClanova; j++) {
-            if (polinom[i].eksponent == polinom[j].eksponent) {
-                polinom[i].koeficijent += polinom[j].koeficijent;
-                // Postavi koeficijent za duplikat na 0 kako bi se kasnije uklonio
-                polinom[j].koeficijent = 0;
+    qsort(polynomial, termCount, sizeof(struct PolynomialTerm), compare);
+
+
+    for (int i = 0; i < termCount; i++) {
+        for (int j = i + 1; j < termCount; j++) {
+            if (polynomial[i].exponent == polynomial[j].exponent) {
+                polynomial[i].coefficient += polynomial[j].coefficient;
+                
+                polynomial[j].coefficient = 0;
             }
         }
     }
 
-    // Ispis sortiranog i sažetog polinoma
-    for (int i = 0; i < brojClanova; i++) {
-        if (polinom[i].koeficijent != 0) {
-            printf("%.2fx^%d", polinom[i].koeficijent, polinom[i].eksponent);
-            if (i < brojClanova - 1) {
+  
+    for (int i = 0; i < termCount; i++) {
+        if (polynomial[i].coefficient != 0) {
+            printf("%.2fx^%d", polynomial[i].coefficient, polynomial[i].exponent);
+            if (i < termCount - 1) {
                 printf(" + ");
             }
         }
     }
     printf("\n");
 
-    // Oslobađanje alocirane memorije
-    free(polinom);
+  
+    free(polynomial);
 
-    // Zatvaranje datoteke
-    fclose(datoteka);
+
+    fclose(file);
 
     return 0;
 }
